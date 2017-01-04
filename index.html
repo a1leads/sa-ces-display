@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>CES Display | Smart Armor</title>
+
+  <!-- Styles -->
+    <link rel="stylesheet" type="text/css" href="css/normalize.css">
+    <link rel="stylesheet" type="text/css" href="css/jquery-ui.min.css">
+    <style type="text/css">
+    body {
+      background-color: transparent;
+      background: url('media/img/home.jpg');
+      background-size: cover;
+    }
+    img {
+      margin: 0;
+      padding: 0;
+    }
+    .display {
+      display: none;
+    }
+    .clear-screen {
+      background: url('media/img/clear.jpg');
+      background-size: cover;
+    }
+    .guns {
+      background: url('media/img/guns.jpg');
+      background-size: cover;
+    }
+    .jewelry {
+      background: url('media/img/jewelry.jpg');
+      background-size: cover;
+    }
+    .keepsakes {
+      background: url('media/img/keepsakes.jpg');
+      background-size: cover;
+    }
+    .medications {
+      background: url('media/img/medications.jpg');
+      background-size: cover;
+    }
+    .toxins {
+      background: url('media/img/toxins.jpg');
+      background-size: cover;
+    }
+    .nightstand {
+      background: url('media/img/nightstand.jpg');
+      background-size: cover;
+    }
+    .files {
+      background: url('media/img/filing-cabinet.jpg');
+      background-size: cover;
+    }
+    .liquor {
+      background: url('media/img/alcohol.jpg');
+      background-size: cover;
+    }
+    .touch {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      z-index: 4;
+    }
+    .btn-1 {
+      left: 25%;
+    }
+    .btn-2 {
+      margin: 0 auto;
+      left:0;
+      right:0;
+    }
+    .btn-3 {
+      right: 25%;
+    }
+    .btn-label {
+      color: #2C7FD6;
+      font-size: 30px;
+      font-weight: 200;
+      text-transform: uppercase;
+      line-height: 140px;
+    }
+    .trigger {
+      position: absolute;
+      bottom: 5%;
+      width: 200px;
+      height:200px;
+      border-radius: 100%;
+      border: 3px solid #fff;
+      background-color: #000;
+      z-index: 3;
+      text-align: center;
+      color: #fff;
+    }
+    .trigger:hover {
+      background-color: #fff; 
+    }
+    .fullscreen { 
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      min-width: 100%;
+      min-height: 100%;
+      width: auto;
+      height: auto;
+      z-index: 5;
+      transform: translate(-50%, -50%);
+    }
+    </style>
+  </head>
+  <body>
+  <!-- Clear Screen -->
+    <div class="clear-screen touch display"></div>
+
+  <!-- Image Map -->
+    <a name="guns" style="position: absolute; left: 0%; top: 0%; width: 25%; height: 32%; z-index: 2;"></a>
+    <a name="jewelry" style="position: absolute; left: 25.1%; top: 0%; width: 25%; height: 32%; z-index: 2;"></a>
+    <a name="keepsakes" style="position: absolute; left: 49.9%; top: 0%; width: 25%; height: 32%; z-index: 2;"></a>
+    <a name="medications" style="position: absolute; left: 75%; top: 0%; width: 25%; height: 32%; z-index: 2;"></a>
+    <a name="toxins" style="position: absolute; left: 0%; top: 32%; width: 33.3%; height: 68%; z-index: 2;"></a>
+    <a name="nightstand" style="position: absolute; left: 33.3%; top: 32%; width: 33.3%; height: 20%; z-index: 2;"></a>
+    <a name="files" style="position: absolute; left: 33.3%; top: 52%; width: 33.3%; height: 48%; z-index: 2;"></a>
+    <a name="liquor" style="position: absolute; left: 66.6%; top: 32%; width: 33.3%; height: 68%; z-index: 2;"></a>
+
+  <!-- Content Images -->
+    <div class="gallery">
+      <div class="guns first slide s-1 touch display"></div>
+      <div class="jewelry slide s-2 touch display"></div>
+      <div class="keepsakes slide s-3 touch display"></div>
+      <div class="medications slide s-4 touch display"></div>
+      <div class="toxins slide s-5 touch display"></div>
+      <div class="nightstand slide s-6 touch display"></div>
+      <div class="files slide touch s-7 display"></div>
+      <div class="liquor slide touch s-8 display"></div>
+    </div>
+
+  <!-- Display Triggers -->
+    <div class="btn-1 cycle trigger">
+      <p class="btn-label">Cycle</p>
+    </div>
+    <div class="btn-2 clear trigger">
+      <p class="btn-label">Clear</p>
+    </div>
+    <div class="btn-3 video trigger">
+      <p class="btn-label">Video</p>
+    </div>
+
+  <!-- Display Video -->
+    <video src="media/video/smartcube.mp4" class="fullscreen display" poster=""></video>
+
+    <script src="js/jquery-3.1.1.min.js"></script>
+    <script src="js/jquery-ui.min.js"></script>
+    <script type="text/javascript">
+      (function($){
+        $(document).ready(function() {
+
+          $('a').click(function() {
+            var attrMatch = $(this).attr('name');
+            $('div.'+attrMatch).fadeIn(800);
+          });
+
+          var intervalDefault,
+          interval = null;
+
+          intervalDefault = setInterval(function() { 
+              $('.cycling > .slide:first').fadeOut().next().fadeIn().end().appendTo('.cycling');
+          }, 12000);
+          interval        = intervalDefault;
+          cycle           = function() {
+            interval;
+          };
+
+          $('.cycle').click(function() {
+            $('.gallery').addClass('cycling');
+            $('.first').fadeIn(400);
+            cycle();
+          });
+
+          $('div.touch').click(function() {
+            if ($('.gallery').hasClass('cycling')) {
+              $('.gallery').replaceWith(gallery.clone(true));
+              $('.gallery').removeClass('cycling')
+              clearInterval(interval);
+              interval = intervalDefault;
+            }
+            $(this).fadeOut(800);
+          });
+
+          var gallery = $('.gallery').clone(true);
+
+          $('.clear').click(function(){
+            $('.clear-screen').fadeIn(800);
+          });
+
+          $('.video').click(function(){
+            $('.trigger').addClass('display');
+            $('video').removeClass('display').attr('loop', true);
+            $('video')[0].play();
+            $('video').click(function(){
+              $('video').addClass('display').attr('loop', false);
+              $('video')[0].pause();
+              $('video')[0].currentTime = 0;
+              $('.trigger').removeClass('display');
+            });
+          });
+        });
+      }(jQuery));
+    </script>
+  </body>
+</html>
